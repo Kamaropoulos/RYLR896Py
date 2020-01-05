@@ -87,7 +87,12 @@ class RYLR896():
             return int(response.split("=")[1])
 
     def SetNetworkID(self, networkID):
-        pass
+        self.__WriteToLoRa("AT+NETWORKID="+str(networkID))
+        response = self.__ReadFromLoRa()
+        if response == "+OK":
+            return True
+        else:
+            return False
 
     def __WriteToLoRa(self, message):
         self.ser.write(str(message+'\r\n').encode())
