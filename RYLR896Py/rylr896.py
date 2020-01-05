@@ -42,12 +42,12 @@ class RYLR896():
     def Receive(self):
         loraData  =self.__ReadFromLoRa()
         if loraData.startswith("+RCV="):
-            loraData = loraData.split("=")[1].split(",")
+            loraData = '='.join(loraData.split("=")[1:]).split(',')
             fromAddress = loraData[0]
             length = loraData[1]
-            message = loraData[2]
-            RSSI = loraData[3]
-            SNR = loraData[4]
+            message = ','.join(loraData[2:-2])
+            RSSI = loraData[-2]
+            SNR = loraData[-1]
 
             return {
                 'fromAddress': fromAddress,
