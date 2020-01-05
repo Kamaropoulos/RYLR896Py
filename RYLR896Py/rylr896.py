@@ -81,7 +81,10 @@ class RYLR896():
             return False
 
     def GetAddress(self):
-        pass
+        self.__WriteToLoRa("AT+ADDRESS?")
+        response = self.__ReadFromLoRa()
+        if response.startswith("+ADDRESS="):
+            return int(response.split("=")[1])
 
     def SetNetworkID(self, networkID):
         pass
