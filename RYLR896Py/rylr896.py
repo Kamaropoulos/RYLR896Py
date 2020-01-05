@@ -1,9 +1,9 @@
-# import serial
+import serial
 
 class RYLR896():
     ser = None
     def __init__(self, tty=None, baudrate=None):
-        # self.ser = serial.Serial(tty, baudrate, timeout=1)
+        self.ser = serial.Serial(tty, baudrate, timeout=1)
         # TODO: Set IPR
         pass
 
@@ -52,7 +52,11 @@ class RYLR896():
         self.ser.write(str(message+'\r\n').encode())
 
     def __ReadFromLoRa(self):
-        pass
+        try:
+            response = self.ser.readline().decode('utf-8')
+            return(response)
+        except:
+            pass
 
     def __SetIPR(self, IPR):
         pass
