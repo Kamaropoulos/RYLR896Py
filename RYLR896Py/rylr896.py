@@ -43,7 +43,12 @@ class RYLR896():
         pass
 
     def SleepMode(self):
-        pass
+        self.__WriteToLoRa("AT+MODE=1")
+        response = self.__ReadFromLoRa()
+        if response == "+OK":
+            return True
+        else:
+            return False
 
     def NormalMode(self):
         pass
