@@ -4,7 +4,7 @@ class RYLR896():
     ser = None
     def __init__(self, tty=None, baudrate=None):
         self.ser = serial.Serial(tty, baudrate, timeout=1)
-        # TODO: Set IPR
+        self.__SetIPR(baudrate)
         pass
 
     def Test(self):
@@ -53,11 +53,16 @@ class RYLR896():
 
     def __ReadFromLoRa(self):
         try:
-            response = self.ser.readline().decode('utf-8')
+            response = self.ser.readline().decode('utf-8')[:-2]
             return(response)
         except:
             pass
 
     def __SetIPR(self, IPR):
-        pass
+        self.__WriteToLoRa("AT+IPR="+str(IPR))
+        response = self.__ReadFromLoRa()
+        if response == "+OK":
+            return True
+        else:
+            return False
 
