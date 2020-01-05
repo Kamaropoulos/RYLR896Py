@@ -40,7 +40,19 @@ class RYLR896():
                 return False
 
     def Receive(self):
-        pass
+        loraData  =self.__ReadFromLoRa()
+        if loraData.startswith("+RCV="):
+            loraData = loraData.split("=")[1].split(",")
+            fromAddress = loraData[0]
+            length = loraData[1]
+            message = loraData[2]
+            RSSI = loraData[3]
+            SNR = loraData[4]
+
+            # TODO: Return other data too
+            
+            return message
+            
 
     def SleepMode(self):
         self.__WriteToLoRa("AT+MODE=1")
