@@ -67,10 +67,10 @@ class RYLR896():
             return False
 
     def SetRFParamsLessThan3KM(self):
-        pass
+        self.SetRFParams(10,7,1,7)
 
     def SetRFParamsMoreThan3KM(self):
-        pass
+        self.SetRFParams(12,3,1,7)
 
     def SetAddress(self, address):
         pass
