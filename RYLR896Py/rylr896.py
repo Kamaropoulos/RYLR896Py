@@ -51,7 +51,12 @@ class RYLR896():
             return False
 
     def NormalMode(self):
-        pass
+        self.__WriteToLoRa("AT+MODE=0")
+        response = self.__ReadFromLoRa()
+        if response == "+OK":
+            return True
+        else:
+            return False
 
     def SetRFParams(self, spreadingFactor, bandwidth, codingRate, programmedPreamble):
         pass
