@@ -59,7 +59,12 @@ class RYLR896():
             return False
 
     def SetRFParams(self, spreadingFactor, bandwidth, codingRate, programmedPreamble):
-        pass
+        self.__WriteToLoRa("AT+PARAMETER="+str(spreadingFactor)+","+str(bandwidth)+","+str(codingRate)+","+str(programmedPreamble))
+        response = self.__ReadFromLoRa()
+        if response == "+OK":
+            return True
+        else:
+            return False
 
     def SetRFParamsLessThan3KM(self):
         pass
