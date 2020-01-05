@@ -8,7 +8,12 @@ class RYLR896():
         pass
 
     def Test(self):
-        pass
+        self.__WriteToLoRa("AT")
+        response = self.__ReadFromLoRa()
+        if response == "+OK":
+            return True
+        else:
+            return False
 
     def Reset(self):
         pass
