@@ -49,10 +49,13 @@ class RYLR896():
             RSSI = loraData[3]
             SNR = loraData[4]
 
-            # TODO: Return other data too
-            
-            return message
-            
+            return {
+                'fromAddress': fromAddress,
+                'length': length,
+                'message': message,
+                'RSSI': RSSI,
+                'SNR': SNR                
+            }
 
     def SleepMode(self):
         self.__WriteToLoRa("AT+MODE=1")
