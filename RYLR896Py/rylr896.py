@@ -49,7 +49,7 @@ class RYLR896():
         pass
 
     def __WriteToLoRa(self, message):
-        pass
+        self.ser.write(str(message+'\r\n').encode())
 
     def __ReadFromLoRa(self):
         pass
