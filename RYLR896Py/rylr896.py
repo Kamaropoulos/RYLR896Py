@@ -16,7 +16,12 @@ class RYLR896():
             return False
 
     def Reset(self):
-        pass
+        self.__WriteToLoRa("AT+RESET")
+        response = self.__ReadBytesFromLoRa()
+        if response == b'+RESET\r\xca\x00\xe0+READY\r\n':
+            return True
+        else:
+            return False
 
     def Send(self, message, address=None):
         if address is None:
@@ -56,12 +61,19 @@ class RYLR896():
     def __WriteToLoRa(self, message):
         self.ser.write(str(message+'\r\n').encode())
 
+    def __ReadBytesFromLoRa(self):
+        try:
+            responseBytes = self.ser.readline()
+            return(responseBytes)
+        except Exception as e:
+            print(e)
+
     def __ReadFromLoRa(self):
         try:
             response = self.ser.readline().decode('utf-8')[:-2]
             return(response)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     def __SetIPR(self, IPR):
         self.__WriteToLoRa("AT+IPR="+str(IPR))
