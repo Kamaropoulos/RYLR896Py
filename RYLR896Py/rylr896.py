@@ -73,7 +73,12 @@ class RYLR896():
         self.SetRFParams(12,3,1,7)
 
     def SetAddress(self, address):
-        pass
+        self.__WriteToLoRa("AT+ADDRESS="+str(address))
+        response = self.__ReadFromLoRa()
+        if response == "+OK":
+            return True
+        else:
+            return False
 
     def GetAddress(self):
         pass
