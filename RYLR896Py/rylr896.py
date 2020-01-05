@@ -3,7 +3,7 @@ import serial
 class RYLR896():
     ser = None
     def __init__(self, tty=None, baudrate=None):
-        self.ser = serial.Serial(tty, baudrate, timeout=1)
+        self.ser = serial.Serial(tty, baudrate)
         self.__SetIPR(baudrate)
         pass
 
@@ -25,8 +25,12 @@ class RYLR896():
 
     def Send(self, message, address=None):
         if address is None:
-            # Broadcast
-            pass
+            self.__WriteToLoRa("AT+SEND=0,"+str(len(message))+","+message)
+            response = self.__ReadFromLoRa()
+            if response == "+OK":
+                return True
+            else:
+                return False
         else:
             # Send to address
             pass
