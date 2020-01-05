@@ -32,8 +32,12 @@ class RYLR896():
             else:
                 return False
         else:
-            # Send to address
-            pass
+            self.__WriteToLoRa("AT+SEND="+str(address)+","+str(len(message))+","+message)
+            response = self.__ReadFromLoRa()
+            if response == "+OK":
+                return True
+            else:
+                return False
 
     def Receive(self):
         pass
