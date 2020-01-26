@@ -109,6 +109,15 @@ class RYLR896():
         else:
             return False
 
+    def SetAESPassword(self, password):
+        if len(password) != 32 return False
+        self.__WriteToLoRa("AT+CPIN="+password)
+        response = self.__ReadFromLoRa()
+        if response == "+OK":
+            return True
+        else:
+            return False
+
     def __WriteToLoRa(self, message):
         self.ser.write(str(message+'\r\n').encode())
 
