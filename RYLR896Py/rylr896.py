@@ -118,6 +118,12 @@ class RYLR896():
         else:
             return False
 
+    def GetVersion(self):
+        self.__WriteToLoRa("AT+VER?")
+        response = self.__ReadFromLoRa()
+        if response.startswith("+VER="):
+            return int(response.split("=")[1])
+
     def __WriteToLoRa(self, message):
         self.ser.write(str(message+'\r\n').encode())
 
