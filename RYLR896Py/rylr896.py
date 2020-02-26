@@ -155,7 +155,7 @@ class RYLR896():
 
     def __ReadFromLoRa(self):
         try:
-            response = self.ser.readline().decode('utf-8')[:-2]
+            response = self.ser.readline().decode('iso-8859-1')[:-2]
             return(response)
         except Exception as e:
             print(e)
