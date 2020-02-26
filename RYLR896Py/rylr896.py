@@ -41,21 +41,40 @@ class RYLR896():
 
     def Receive(self):
         loraData  =self.__ReadFromLoRa()
-        if loraData.startswith("+RCV="):
-            loraData = '='.join(loraData.split("=")[1:]).split(',')
-            fromAddress = loraData[0]
-            length = loraData[1]
-            message = ','.join(loraData[2:-2])
-            RSSI = loraData[-2]
-            SNR = loraData[-1]
+        try:
+            if loraData.startswith("+ERR="):
+                errorCode = int(loraData.split("=")[1])
+                errorCodes={
+                    1:"There is not \"enter\" or 0x0D 0x0A in the end of the AT Command.",
+                    2:"The head of AT command is not \"AT\" string. ",
+                    3:"There is not \"=\" symbol in the AT command.",
+                    4:"Unknown command.",
+                    10:"TX is over times.",
+                    11:"RX is over times.",
+                    12:"CRC error.",
+                    13:"TX data more than 240 bytes.",
+                    15:"Unknow error."
+                }
+                print(errorCodes.get(errorCode, "An unknown error occured while receiving data from LoRa."))
+                # Retry receiving
+                return self.Receive()
+            elif loraData.startswith("+RCV="):
+                loraData = '='.join(loraData.split("=")[1:]).split(',')
+                fromAddress = loraData[0]
+                length = loraData[1]
+                message = ','.join(loraData[2:-2])
+                RSSI = loraData[-2]
+                SNR = loraData[-1]
 
-            return {
-                'fromAddress': fromAddress,
-                'length': length,
-                'message': message,
-                'RSSI': RSSI,
-                'SNR': SNR                
-            }
+                return {
+                    'fromAddress': fromAddress,
+                    'length': length,
+                    'message': message,
+                    'RSSI': RSSI,
+                    'SNR': SNR
+                }
+        except:
+            print("Error while receiving data from LoRa")
 
     def SleepMode(self):
         self.__WriteToLoRa("AT+MODE=1")
@@ -110,7 +129,7 @@ class RYLR896():
             return False
 
     def SetAESPassword(self, password):
-        if len(password) != 32 return False
+        if len(password) != 32: return False
         self.__WriteToLoRa("AT+CPIN="+password)
         response = self.__ReadFromLoRa()
         if response == "+OK":
